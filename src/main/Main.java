@@ -2,40 +2,16 @@ package main;
 
 import decryption.DecryptionService;
 import encryption.EncryptionService;
+import input.InputHandler;
 import keygen.KeyGenService;
-
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class Main {
 
-    private enum Tasks {
-        ENCRYPTION,
-        DECRYPTION,
-        KEY_GEN
-    }
-
-    private static final Scanner scanner = new Scanner(System.in);
-
     private static Tasks chooseTask() {
         System.out.println("Milyen műveletet szeretne végezni? (titkosítás: 1, visszafejtés: 2, kulcsgenerálás: 3)");
-        int taskNum;
-        while (true) {
-            try {
-                taskNum = scanner.nextInt();
-                if (taskNum < 1 || taskNum > 3) {
-                    System.err.println("Lehetséges értékek: 1, 2, 3!");
-                    continue;
-                }
-                break;
-            } catch (InputMismatchException e) {
-                System.err.println("Hiba! Rossz bemenet, próbáljuk újra!");
-                scanner.next();
-            }
-        }
+        int taskNum = InputHandler.getTaskInput("Művelet");
         return Tasks.values()[taskNum - 1];
     }
-
 
     public static void main(String[] args) {
         switch (chooseTask()) {

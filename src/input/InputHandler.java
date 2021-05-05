@@ -32,6 +32,12 @@ public class InputHandler {
                             continue;
                         }
                     }
+                    case TASK_CONDITION -> {
+                        if (input < 1 || input > 3) {
+                            System.err.println("Lehetséges értékek: 1, 2, 3!");
+                            continue;
+                        }
+                    }
                 }
                 break;
             } catch (InputMismatchException e) {
@@ -52,5 +58,9 @@ public class InputHandler {
 
     public static int getBasicInput(String symbol) {
         return getUserInput(symbol, InputCondition.NO_CONDITION, 0);
+    }
+
+    public static int getTaskInput(String symbol) {
+        return getUserInput(symbol, InputCondition.TASK_CONDITION, 0);
     }
 }

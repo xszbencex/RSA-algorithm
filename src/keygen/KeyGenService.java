@@ -1,45 +1,43 @@
 package keygen;
 
-import main.RSAService;
+import algorithms.GCD;
+import input.InputHandler;
 
-import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+public class KeyGenService {
 
-import static main.Prime.isPrime;
+    private int n;
+    private int e;
 
-public class KeyGenService implements RSAService {
-
-    private static final Scanner scanner = new Scanner(System.in);
-
-    private int p;
-
-    @Override
-    public void getData() {
-        System.out.println("Alap adatok megadása:");
-        System.out.print("p = ");
+    private int findD(int phiN) {
+        int result = 1;
         while (true) {
-            try {
-                p = scanner.nextInt();
-                if (isPrime(p)) {
-                    System.err.println("A megadott szám nem prím!");
-                    continue;
-                }
+            if ((result * e) % phiN == 1)
                 break;
-            } catch (InputMismatchException e) {
-                System.err.println("Hiba! Rossz bemenet, próbáljuk újra!");
-                scanner.next();
+            else {
+                ++result;
             }
         }
+        return result;
     }
 
-    @Override
+    public void getData() {
+        int p = InputHandler.getPrimeInput("p");
+        int q = InputHandler.getPrimeInput("q");
+        n = p * q;
+        int phiN = GCD.eulerPhiFunction(n);
+        e = InputHandler.getNumberEInput(phiN);
+    }
+    
     public void run() {
+        System.out.println("--------------------Alap adatok megadása-------------------------");
         getData();
+        int d = findD(e);
+        System.out.println("---------------------------Megoldás-----------------------------");
+        System.out.println("Publikus kulcs: (" + e + ", " + n + ")");
+        System.out.println("Privát kulcs: (" + d + ", " + n + ")");
     }
 
-    public static void main(String[] args) throws IOException {
-        Runtime.getRuntime().exec("cls");
+    public static void main(String[] args) {
         KeyGenService keyGenService = new KeyGenService();
         keyGenService.run();
     }

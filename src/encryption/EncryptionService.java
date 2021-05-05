@@ -1,46 +1,36 @@
 package encryption;
 
-import main.RSAService;
+import algorithms.GCD;
+import input.InputHandler;
 
-import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+public class EncryptionService {
 
-import static main.Prime.isPrime;
+    private int n;
+    private int e;
+    private int m;
 
-public class EncryptionService implements RSAService {
+    private int encryption() {
+        return (int) (Math.pow(m, e) % n);
+    }
 
-    private static final Scanner scanner = new Scanner(System.in);
-
-    private int p;
-
-    @Override
     public void getData() {
-        System.out.println("Alap adatok megadása:");
-        System.out.print("p = ");
-        while (true) {
-            try {
-                p = scanner.nextInt();
-                if (!isPrime(p)) {
-                    System.err.println("A megadott szám nem prím!");
-                    continue;
-                }
-                break;
-            } catch (InputMismatchException e) {
-                System.err.println("Hiba! Rossz bemenet, próbáljuk újra!");
-                scanner.next();
-            }
-        }
+        int p = InputHandler.getPrimeInput("p");
+        int q = InputHandler.getPrimeInput("q");
+        n = p * q;
+        int phiN = GCD.eulerPhiFunction(n);
+        e = InputHandler.getNumberEInput(phiN);
+        m = InputHandler.getBasicInput("m");
     }
 
-    @Override
     public void run() {
+        System.out.println("--------------------Alap adatok megadása-------------------------");
         getData();
+        System.out.println("---------------------------Megoldás-----------------------------");
+        System.out.println("Titkosított üzenet: " + encryption());
     }
 
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        // new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+    public static void main(String[] args) {
         EncryptionService encryptionService = new EncryptionService();
         encryptionService.run();
     }

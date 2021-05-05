@@ -1,9 +1,9 @@
-package main;
+package algorithms;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static main.GCD.isRelativePrimes;
+import static algorithms.GCD.isRelativePrime;
 
 public class Prime {
 
@@ -34,7 +34,7 @@ public class Prime {
         for (int i = 0; i < numberOfBases; i++) {
             // int a = random.nextInt(n - 3) + 2;
             int a = ThreadLocalRandom.current().nextInt(2, n);
-            if (isRelativePrimes(a, n)) {
+            if (isRelativePrime(a, n)) {
                 if (isComposite(a, d, n, s)) {
                     return false;
                 }

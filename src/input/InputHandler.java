@@ -2,7 +2,6 @@ package input;
 
 import algorithms.GCD;
 
-import java.math.BigInteger;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,12 +11,12 @@ public class InputHandler {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    private static BigInteger getUserInput(String symbol, InputCondition inputCondition, BigInteger phiN) {
-        BigInteger input;
+    private static long getUserInput(String symbol, InputCondition inputCondition, long phiN) {
+        long input;
         while (true) {
             try {
                 System.out.print(symbol + " = ");
-                 input = scanner.nextBigInteger();
+                input = scanner.nextLong();
                 switch (inputCondition) {
                     case NO_CONDITION -> {
                     }
@@ -34,8 +33,8 @@ public class InputHandler {
                         }
                     }
                     case TASK_CONDITION -> {
-                        if (input.compareTo(BigInteger.ONE) < 0 || input.compareTo(BigInteger.valueOf(3)) > 0) {
-                            System.out.println("Lehetséges értékek: 1, 2, 3!");
+                        if (input < 1 || input > 3) {
+                            System.err.println("Lehetséges értékek: 1, 2, 3!");
                             continue;
                         }
                     }
@@ -49,19 +48,19 @@ public class InputHandler {
         return input;
     }
 
-    public static BigInteger getPrimeInput(String symbol) {
-        return getUserInput(symbol, InputCondition.IS_PRIME, BigInteger.ZERO);
+    public static long getPrimeInput(String symbol) {
+        return getUserInput(symbol, InputCondition.IS_PRIME, 0);
     }
 
-    public static BigInteger getNumberEInput(BigInteger phiN) {
+    public static long getNumberEInput(long phiN) {
         return getUserInput("e", InputCondition.IS_RELATIVE_PRIME, phiN);
     }
 
-    public static BigInteger getBasicInput(String symbol) {
-        return getUserInput(symbol, InputCondition.NO_CONDITION, BigInteger.ZERO);
+    public static long getBasicInput(String symbol) {
+        return getUserInput(symbol, InputCondition.NO_CONDITION, 0);
     }
 
-    public static BigInteger getTaskInput(String symbol) {
-        return getUserInput(symbol, InputCondition.TASK_CONDITION, BigInteger.ZERO);
+    public static long getTaskInput(String symbol) {
+        return getUserInput(symbol, InputCondition.TASK_CONDITION, 0);
     }
 }

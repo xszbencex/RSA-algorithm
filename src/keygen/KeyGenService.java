@@ -9,11 +9,12 @@ public class KeyGenService {
 
     private BigInteger n;
     private BigInteger e;
+    private BigInteger phiN;
 
-    private BigInteger findD(BigInteger phiN) {
+    private BigInteger findD() {
         BigInteger result = BigInteger.ONE;
         while (true) {
-            if (result.multiply(e).mod(phiN).equals(BigInteger.ONE))
+            if (result.multiply(e).mod(phiN).compareTo(BigInteger.ONE) == 0)
                 break;
             else {
                 result = result.add(BigInteger.ONE);
@@ -23,17 +24,17 @@ public class KeyGenService {
     }
 
     public void getData() {
-        int p = InputHandler.getPrimeInput("p");
-        int q = InputHandler.getPrimeInput("q");
-        n = p * q;
-        int phiN = GCD.eulerPhiFunction(n);
+        BigInteger p = InputHandler.getPrimeInput("p");
+        BigInteger q = InputHandler.getPrimeInput("q");
+        n = p.multiply(q);
+        phiN = GCD.eulerPhiFunction(n);
         e = InputHandler.getNumberEInput(phiN);
     }
     
     public void run() {
         System.out.println("--------------------Alap adatok megadása-------------------------");
         getData();
-        BigInteger d = findD(e);
+        BigInteger d = findD();
         System.out.println("---------------------------Megoldás-----------------------------");
         System.out.println("Publikus kulcs: (" + e + ", " + n + ")");
         System.out.println("Privát kulcs: (" + d + ", " + n + ")");

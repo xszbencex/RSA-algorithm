@@ -16,7 +16,7 @@ public class Prime {
             return false;
         }
         BigInteger s = BigInteger.ZERO;
-        BigInteger d = n.add(BigInteger.ZERO.negate());
+        BigInteger d = n.add(BigInteger.ONE.negate());
         while (true) {
             if (d.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
                 s = s.add(BigInteger.ONE);
@@ -25,11 +25,11 @@ public class Prime {
                 break;
             }
         }
-        BigInteger numberOfBases = BigInteger.valueOf(6);
-        for (BigInteger i = BigInteger.ZERO; i.compareTo(numberOfBases) < 0; i = i.add(BigInteger.ONE)) {
-            BigInteger a = ThreadLocalRandom.current().nextInt(2, n.intValue());
-            if (isRelativePrime(a, n)) {
-                if (isComposite(a, d, n, s)) {
+        int numberOfBases = 6;
+        for (int i = 0; i < numberOfBases; ++i) {
+            int a = ThreadLocalRandom.current().nextInt(2, 1000);
+            if (isRelativePrime(BigInteger.valueOf(a), n)) {
+                if (isComposite(BigInteger.valueOf(a), d, n, s)) {
                     return false;
                 }
             }

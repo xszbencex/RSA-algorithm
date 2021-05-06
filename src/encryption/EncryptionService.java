@@ -16,9 +16,9 @@ public class EncryptionService {
     }
 
     public void getData() {
-        int p = InputHandler.getPrimeInput("p");
-        int q = InputHandler.getPrimeInput("q");
-        n = p * q;
+        BigInteger p = InputHandler.getPrimeInput("p");
+        BigInteger q = InputHandler.getPrimeInput("q");
+        n = p.multiply(q);
         BigInteger phiN = GCD.eulerPhiFunction(n);
         e = InputHandler.getNumberEInput(phiN);
         m = InputHandler.getBasicInput("m");

@@ -1,39 +1,33 @@
 package algorithms;
 
-import java.util.Random;
+import java.math.BigInteger;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static algorithms.GCD.isRelativePrime;
 
 public class Prime {
 
-    private static final Random random = new Random();
-
-    /**
-     * Miller-Rabin test
-     */
-    public static boolean isPrime(int n) { // TODO long
-        if (n < 2) {
+    public static boolean isPrime(BigInteger n) { // TODO long
+        if (n.compareTo(BigInteger.TWO) < 0) {
             return false;
-        } else if (n == 2) {
+        } else if (n.compareTo(BigInteger.TWO) == 0) {
             return true;
-        } else if (n % 2 == 0) {
+        } else if (n.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
             return false;
         }
-        int s = 0;
-        int d = n - 1;
+        BigInteger s = BigInteger.ZERO;
+        BigInteger d = n.add(BigInteger.ZERO.negate());
         while (true) {
-            if (d % 2 == 0) {
-                s++;
-                d = Math.floorDiv(d, 2);
+            if (d.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+                s = s.add(BigInteger.ONE);
+                d = d.divide(BigInteger.TWO);
             } else {
                 break;
             }
         }
-        int numberOfBases = 5;
-        for (int i = 0; i < numberOfBases; i++) {
-            // int a = random.nextInt(n - 3) + 2;
-            int a = ThreadLocalRandom.current().nextInt(2, n);
+        BigInteger numberOfBases = BigInteger.valueOf(6);
+        for (BigInteger i = BigInteger.ZERO; i.compareTo(numberOfBases) < 0; i = i.add(BigInteger.ONE)) {
+            BigInteger a = ThreadLocalRandom.current().nextInt(2, n.intValue());
             if (isRelativePrime(a, n)) {
                 if (isComposite(a, d, n, s)) {
                     return false;
@@ -43,12 +37,12 @@ public class Prime {
         return true;
     }
 
-    private static boolean isComposite(int a, int d, int n, int s) {
-        if (Math.pow(a, d) % n == 1) {
+    private static boolean isComposite(BigInteger a, BigInteger d, BigInteger n, BigInteger s) {
+        if (a.modPow(d, n).equals(BigInteger.ONE)) {
             return false;
         }
-        for (int r = 0; r < s; r++) {
-            if (Math.pow(a, d * Math.pow(2, r)) % n == (n - 1)) {
+        for (BigInteger r = BigInteger.ZERO; r.compareTo(s) < 0; r = r.add(BigInteger.ONE)) {
+            if (a.modPow(d.multiply(BigInteger.TWO.pow(r.intValue())), n).equals(n.add(BigInteger.ONE.negate()))) {
                 return false;
             }
         }

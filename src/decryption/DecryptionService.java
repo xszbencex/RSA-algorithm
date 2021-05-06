@@ -3,20 +3,21 @@ package decryption;
 import algorithms.GCD;
 import input.InputHandler;
 
+import java.math.BigInteger;
 import java.util.Map;
 
 public class DecryptionService {
 
-    private int p;
-    private int q;
-    private int c;
-    private int d;
+    private BigInteger p;
+    private BigInteger q;
+    private BigInteger c;
+    private BigInteger d;
 
-    private int decryption() {
-        final int c1 = (int) (Math.pow(c, d % (p-1)) % p);
-        final int c2 = (int) (Math.pow(c, d % (q-1)) % q);
-        final Map<String, Integer> equation = GCD.extendedGcd(q, p);
-        return (c1 * equation.get("x") * q + c2 * equation.get("y") * p) % (p * q);
+    private BigInteger decryption() {
+        final BigInteger c1 = c.modPow(d.mod(p.add(BigInteger.ONE.negate())), p);
+        final BigInteger c2 = c.modPow(d.mod(q.add(BigInteger.ONE.negate())), q);
+        final Map<String, BigInteger> equation = GCD.extendedGcd(q, p);
+        return (c1.multiply(equation.get("x")).multiply(q).add(c2.multiply(equation.get("y")).multiply(p)).mod(p.multiply(q)));
     }
 
     public void getData() {

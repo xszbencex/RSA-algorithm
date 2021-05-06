@@ -3,18 +3,20 @@ package keygen;
 import algorithms.GCD;
 import input.InputHandler;
 
+import java.math.BigInteger;
+
 public class KeyGenService {
 
-    private int n;
-    private int e;
+    private BigInteger n;
+    private BigInteger e;
 
-    private int findD(int phiN) {
-        int result = 1;
+    private BigInteger findD(BigInteger phiN) {
+        BigInteger result = BigInteger.ONE;
         while (true) {
-            if ((result * e) % phiN == 1)
+            if (result.multiply(e).mod(phiN).equals(BigInteger.ONE))
                 break;
             else {
-                ++result;
+                result = result.add(BigInteger.ONE);
             }
         }
         return result;
@@ -31,7 +33,7 @@ public class KeyGenService {
     public void run() {
         System.out.println("--------------------Alap adatok megadása-------------------------");
         getData();
-        int d = findD(e);
+        BigInteger d = findD(e);
         System.out.println("---------------------------Megoldás-----------------------------");
         System.out.println("Publikus kulcs: (" + e + ", " + n + ")");
         System.out.println("Privát kulcs: (" + d + ", " + n + ")");

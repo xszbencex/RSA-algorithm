@@ -3,21 +3,23 @@ package encryption;
 import algorithms.GCD;
 import input.InputHandler;
 
+import java.math.BigInteger;
+
 public class EncryptionService {
 
-    private int n;
-    private int e;
-    private int m;
+    private BigInteger n;
+    private BigInteger e;
+    private BigInteger m;
 
-    private int encryption() {
-        return (int) (Math.pow(m, e) % n);
+    private BigInteger encryption() {
+        return m.modPow(e, n);
     }
 
     public void getData() {
         int p = InputHandler.getPrimeInput("p");
         int q = InputHandler.getPrimeInput("q");
         n = p * q;
-        int phiN = GCD.eulerPhiFunction(n);
+        BigInteger phiN = GCD.eulerPhiFunction(n);
         e = InputHandler.getNumberEInput(phiN);
         m = InputHandler.getBasicInput("m");
     }
